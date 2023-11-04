@@ -1,0 +1,22 @@
+#!/bin/bash
+
+NUM=$1
+node_name="dyn-node-$((NUM))"
+ip_selected="192.168.0.$((NUM+10))"
+network="test-bridge"
+seeds_port_open_host="8$((NUM+2))01"
+dynomite_port_open_host="8$((NUM+2))02"
+custom_script_selected="custom_$((NUM)).yml"
+
+docker stop $node_name
+docker rm $node_name
+
+docker run --name $node_name \
+       -v ./conf:/conf \
+       --net=$network \
+       --ip=$ip_selected \
+       -p $seeds_port_open_host:8101 \
+       -p $dynomite_port_open_host:8102 \
+       -d dynomite-full-img $custom_script_selected
+
+echo "Dynomite redis has been successfully started with node $node_name"

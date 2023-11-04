@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker rmi -f dynomite-full-img
+docker build -t dynomite-full-img .
